@@ -1,17 +1,32 @@
-import express from "express";
-import http from "http";
+import "dotenv/config";
+import express, { Request, Response } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import { Env } from "./config/env.config";
+import { asyncHandler } from "./middlewares/asyncHandler.middleware";
+import { HTTPSTATUS } from "./config/http.config";
 
 const app = express();
-const server = http.createServer(app);
-
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: Env.FRONTEND_ORIGIN,
     credentials: true,
   }),
 );
 
-server.listen(8000, async () => {
-  console.log("Server running on port 8000");
+app.get(
+  "/health",
+  asyncHandler(async (req: Request, res: Response) => {
+    res.status(HTTPSTATUS.OK).json({
+      message: "Server is healthy",
+      status: "OK",
+    });
+  }),
+);
+
+app.listen(Env.PORT, async () => {
+  console.log(`Server running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
 });

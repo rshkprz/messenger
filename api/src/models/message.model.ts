@@ -1,11 +1,12 @@
 import mongoose, { Document, Schema } from "mongoose";
+import z from "zod";
 
 export interface MessageDocument extends Document {
   chatId: mongoose.Types.ObjectId;
   sender: mongoose.Types.ObjectId;
   content?: string;
   image?: string;
-  replyTo?: mongoose.Types.ObjectId;
+  replyTo?: mongoose.Types.ObjectId | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,5 +24,5 @@ const messageSchema = new Schema<MessageDocument>(
   },
 );
 
-const messageModel = mongoose.model<MessageDocument>("Message", messageSchema);
-export default messageModel;
+const MessageModel = mongoose.model<MessageDocument>("Message", messageSchema);
+export default MessageModel;

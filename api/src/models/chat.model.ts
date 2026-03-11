@@ -14,14 +14,15 @@ const chatSchema = new Schema<ChatDocument>(
   {
     participants: [
       {
-        types: Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
       },
     ],
     lastMessage: { type: Schema.Types.ObjectId, ref: "Message", default: null },
     isGroup: { type: Boolean, default: false },
-    createdBy: { type: Schema.Types.ObjectId, ref: "user", required: true },
+    groupName: {type: String},
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   {
     timestamps: true,

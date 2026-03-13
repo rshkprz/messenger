@@ -1,6 +1,7 @@
+import { emitNewChatToParticipants } from "../lib/socket";
 import ChatModel from "../models/chat.model";
 import UserModel from "../models/user.model";
-import { NotFoundException } from "../utils/app-error";
+import { BadRequestException, NotFoundException } from "../utils/app-error";
 import { CreateChatSchemaType } from "../validators/chat.validator";
 
 export const createChatService = async (
@@ -40,6 +41,13 @@ export const createChatService = async (
       createdBy: userId,
     });
   }
+
+  const populatedChat = await chat?.populate("participants", "name avatar");
+  const participantIdStrings = populatedChat?.participants?.map((p) => {
+    return p._id?.toString();
+  });
+
+  emitNewChatToParticipants(participantIdStrings, populatedChat);
   return chat;
 };
 
@@ -59,4 +67,19 @@ export const getUserChatsService = async (userId: string) => {
     })
     .sort({ updatedAt: -1 });
   return chats;
+};
+
+export const validateChatParticipants = async (
+  chatId: string,
+  userId: string,
+) => {
+  const chat = await ChatModel.findOne({
+    _id: chatId,
+    participants: {
+      $in: [userId],
+    },
+  });
+
+  if (!chat) throw new BadRequestException("User is not a participant in chat");
+  return chat;
 };

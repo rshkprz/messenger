@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
+import http from "http";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { Env } from "./config/env.config";
@@ -12,7 +13,11 @@ import "./config/passport.config";
 import routes from "./routes";
 
 const app = express();
-app.use(express.json({limit: "10mb"}));
+const server = http.createServer(app);
+
+initializeSocket(server);
+
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(

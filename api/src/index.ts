@@ -11,6 +11,7 @@ import connectDatabase from "./config/database.config";
 import passport from "passport";
 import "./config/passport.config";
 import routes from "./routes";
+import { initializeSocket } from "./lib/socket";
 
 const app = express();
 const server = http.createServer(app);

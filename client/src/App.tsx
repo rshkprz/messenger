@@ -4,14 +4,12 @@ import AppRoutes from "./routes";
 import { Spinner } from "./components/ui/spinner";
 import { useLocation } from "react-router-dom";
 import { isAuthRoute } from "./routes/routes";
-import { useSocket } from "./hooks/use-socket";
 
 function App() {
   const { pathname } = useLocation();
   const { user, isAuthStatus, isAuthStatusLoading } = useAuth();
   const isAuth = isAuthRoute(pathname);
-  const {onlineUsers} = useSocket();
-  
+
   useEffect(() => {
     if (isAuth) return;
     isAuthStatus();

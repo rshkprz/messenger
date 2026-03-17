@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type React from "react";
 import { Link } from "react-router-dom";
+import Logo from "@/components/logo";
 
 export default function SignIn({
   ...props
@@ -45,6 +46,9 @@ export default function SignIn({
       <div className="w-full max-w-sm">
         <Card {...props}>
           <CardHeader>
+            <div className="flex items-center justify-center mb-2">
+              <Logo imgClass="w-10"  />
+            </div>
             <CardTitle>Login to your account</CardTitle>
             <CardDescription>
               Enter your email below to login to your account
@@ -93,7 +97,7 @@ export default function SignIn({
                       <Input
                         {...field}
                         id="input-password"
-                        type="text"
+                        type="password"
                         aria-invalid={fieldState.invalid}
                         placeholder="******"
                         autoComplete="off"

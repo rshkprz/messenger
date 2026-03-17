@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type React from "react";
 import { Link } from "react-router-dom";
+import Logo from "@/components/logo";
 
 export default function SignUp({
   ...props
@@ -46,6 +47,9 @@ export default function SignUp({
       <div className="w-full max-w-sm">
         <Card {...props}>
           <CardHeader>
+            <div className="flex items-center justify-center mb-2">
+              <Logo imgClass="w-10" />
+            </div>
             <CardTitle>Create an account</CardTitle>
             <CardDescription>
               Enter your information below to create your account
@@ -124,8 +128,7 @@ export default function SignUp({
                     </Button>
 
                     <FieldDescription className="px-6 text-center">
-                      Already have an account?{" "}
-                      <Link to="/">Sign in</Link>
+                      Already have an account? <Link to="/">Sign in</Link>
                     </FieldDescription>
                   </Field>
                 </FieldGroup>

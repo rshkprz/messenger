@@ -1,6 +1,9 @@
+import EmptyState from "@/components/empty-state";
 
 export default function Chat() {
   return (
-    <div>Chat</div>
+    <div className="hidden lg:block h-svh">
+      <EmptyState />
+    </div>
   )
 }

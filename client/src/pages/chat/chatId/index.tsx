@@ -10,7 +10,7 @@ import { useSocket } from "@/hooks/use-socket";
 import type { MessageType } from "@/types/chat.type";
 import { useEffect, useState } from "react";
 
-export default function SingleChat() {
+const SingleChat = () => {
   const chatId = useChatId();
   const { fetchSingleChat, isSingleChatLoading, singleChat } = useChat();
   const { socket } = useSocket();
@@ -23,8 +23,8 @@ export default function SingleChat() {
   const messages = singleChat?.messages || [];
 
   useEffect(() => {
-    if (!chat) return;
-    fetchSingleChat(chatId!);
+    if (!chatId) return;
+    fetchSingleChat(chatId);
   }, [fetchSingleChat, chatId]);
 
   //Socket Chat room
@@ -52,6 +52,7 @@ export default function SingleChat() {
       </div>
     );
   }
+
   return (
     <div className="relative h-svh flex flex-col">
       <ChatHeader chat={chat} currentUserId={currentUserId} />
@@ -60,7 +61,7 @@ export default function SingleChat() {
         {messages.length === 0 ? (
           <EmptyState
             title="Start a conversation"
-            description="No messages yet. Send the first message."
+            description="No messages yet. Send the first message"
           />
         ) : (
           <ChatBody chatId={chatId} messages={messages} onReply={setReplyTo} />
@@ -75,4 +76,6 @@ export default function SingleChat() {
       />
     </div>
   );
-}
+};
+
+export default SingleChat;

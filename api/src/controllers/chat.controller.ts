@@ -6,7 +6,7 @@ import {
   createChatService,
   getUserChatsService,
 } from "../services/chat.service";
-import { getSingleChatService } from "../services/user.service";
+import { getSingleChatService } from "../services/chat.service";
 
 export const createChatController = asyncHandler(
   async (req: Request, res: Response) => {

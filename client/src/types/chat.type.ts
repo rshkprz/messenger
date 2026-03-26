@@ -33,7 +33,7 @@ export type CreateChatType = {
     groupName?: string;
 }
 
-export type createMessageType = {
+export type CreateMessageType = {
     chatId: string | null;
     content?: string;
     image?: string;

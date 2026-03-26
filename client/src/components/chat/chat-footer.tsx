@@ -1,12 +1,12 @@
 import { useChat } from "@/hooks/use-chat";
 import type { MessageType } from "@/types/chat.type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Paperclip, Send, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import { Button } from "../ui/button";
+import { Paperclip, Send, X } from "lucide-react";
 import { Field, FieldGroup } from "../ui/field";
 import { Input } from "../ui/input";
 import ChatReplyBar from "./chat-reply-bar";
@@ -17,7 +17,8 @@ interface Props {
   replyTo: MessageType | null;
   onCancelReply: () => void;
 }
-export default function ChatFooter ({
+
+export default function ChatFooter({
   chatId,
   currentUserId,
   replyTo,
@@ -39,9 +40,11 @@ export default function ChatFooter ({
     },
   });
 
+  // Handle image
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     if (!file.type.startsWith("image/")) {
       toast.error("Please select an image file");
       return;
@@ -57,49 +60,50 @@ export default function ChatFooter ({
     if (imageInputRef.current) imageInputRef.current.value = "";
   };
 
+  // Submit
   const onSubmit = (values: { message?: string }) => {
     if (isSendingMsg) return;
+
+    if (!chatId) {
+      toast.error("Invalid chat");
+      return;
+    }
+
     if (!values.message?.trim() && !image) {
       toast.error("Please enter a message or select an image");
       return;
     }
-    const payload = {
+
+    sendMessage({
       chatId,
-      content: values.message,
+      content: values.message?.trim() || "",
       image: image || undefined,
       replyTo: replyTo,
-    };
-    //Send Message
-    sendMessage(payload);
+    });
 
     onCancelReply();
     handleRemoveImage();
-    form.reset();
+    form.reset({ message: "" });
   };
+
   return (
     <>
-      <div
-        className="sticky bottom-0
-       inset-x-0 z-[999]
-       bg-card border-t border-border py-4
-      "
-      >
+      <div className="sticky bottom-0 inset-x-0 z-[999] bg-card border-t border-border py-4">
+        
+        {/* 📷 Image Preview */}
         {image && !isSendingMsg && (
-          <div className="max-w-6xl mx-auto px-8.5">
+          <div className="max-w-6xl mx-auto px-8.5 mb-2">
             <div className="relative w-fit">
               <img
                 src={image}
-                className="object-contain h-16 bg-muted min-w-16"
+                className="object-contain h-16 bg-muted min-w-16 rounded"
               />
 
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="absolute top-px right-1
-                 bg-black/50 text-white rounded-full
-                 cursor-pointer
-                "
+                className="absolute top-0 right-0 bg-black/50 text-white rounded-full"
                 onClick={handleRemoveImage}
               >
                 <X className="h-3 w-3" />
@@ -107,67 +111,65 @@ export default function ChatFooter ({
             </div>
           </div>
         )}
-        
-          <form
-            id="chat-form"
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="max-w-6xl px-8.5 mx-auto
-            flex items-end gap-2
-            "
+
+        {/* 💬 Form */}
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="max-w-6xl px-8.5 mx-auto flex items-end gap-2"
+        >
+          {/* 📎 File Upload */}
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            disabled={isSendingMsg}
+            className="rounded-full"
+            onClick={() => imageInputRef.current?.click()}
           >
-            <div className="flex items-center gap-1.5">
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                disabled={isSendingMsg}
-                className="rounded-full"
-                onClick={() => imageInputRef.current?.click()}
-              >
-                <Paperclip className="h-4 w-4" />
-              </Button>
-              <input
-                type="file"
-                className="hidden"
-                accept="image/*"
-                disabled={isSendingMsg}
-                ref={imageInputRef}
-                onChange={handleImageChange}
-              />
-            </div>
-            <FieldGroup>
-                <Controller
-                  name="message"
-                  control={form.control}
-                  render={({ field }) => (
-                    <Field aria-disabled={isSendingMsg}>
-                      <Input
+            <Paperclip className="h-4 w-4" />
+          </Button>
+
+          <input
+            type="file"
+            hidden
+            accept="image/*"
+            ref={imageInputRef}
+            disabled={isSendingMsg}
+            onChange={handleImageChange}
+          />
+
+          {/* 📝 Message Input */}
+          <FieldGroup className="flex-1">
+            <Controller
+              name="message"
+              control={form.control}
+              render={({ field }) => (
+                <Field>
+                  <Input
                     {...field}
                     autoComplete="off"
-                    placeholder="Type new message"
+                    placeholder="Type a message"
                     className="min-h-[40px] bg-background"
+                    disabled={isSendingMsg}
                   />
-                      
-                      
-                    </Field>
-                  )}
-                />
-                </FieldGroup>
-            
+                </Field>
+              )}
+            />
+          </FieldGroup>
 
-            <Button
-              type="submit"
-              size="icon"
-              form="chat-form"
-              className="rounded-lg"
-              disabled={isSendingMsg}
-            >
-              <Send className="h-3.5 w-3.5" />
-            </Button>
-          </form>
-        
+          {/* 🚀 Send */}
+          <Button
+            type="submit"
+            size="icon"
+            className="rounded-lg"
+            disabled={isSendingMsg}
+          >
+            <Send className="h-3.5 w-3.5" />
+          </Button>
+        </form>
       </div>
 
+      {/* 🔁 Reply Bar */}
       {replyTo && !isSendingMsg && (
         <ChatReplyBar
           replyTo={replyTo}
@@ -177,4 +179,4 @@ export default function ChatFooter ({
       )}
     </>
   );
-};
+}

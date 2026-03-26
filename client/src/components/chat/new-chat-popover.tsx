@@ -16,8 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 export const NewChatPopover = memo(() => {
   const navigate = useNavigate();
-  const { fetchAllUsers, users, isUsersLoading, createChat, isCreatingChat } =
-    useChat();
+  const { fetchAllUsers, users, isUsersLoading, createChat, isCreatingChat } = useChat();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isGroupMode, setIsGroupMode] = useState(false);
@@ -28,12 +27,13 @@ export const NewChatPopover = memo(() => {
 
   useEffect(() => {
     fetchAllUsers();
+    // console.log("users:", users);
   }, [fetchAllUsers]);
 
   const toggleUserSelection = (id: string) => {
     setSelectedUsers((prev) =>
       prev.includes(id)
-        ? prev.filter((userId) => userId !== id)
+        ? prev.filter((userId) => userId != id)
         : [...prev, id],
     );
   };
@@ -112,7 +112,7 @@ export const NewChatPopover = memo(() => {
 
           <InputGroup>
             <InputGroupInput
-            //   value={isGroupMode ? groupName : ""}
+              value={isGroupMode ? groupName : ""}  
               onChange={
                 isGroupMode ? (e) => setGroupName(e.target.value) : undefined
               }
@@ -187,7 +187,7 @@ const UserAvatar = memo(({ user }: { user: UserType }) => (
     <AvatarWithBadge name={user.name} src={user.avatar ?? ""} />
     <div className="flex-1 min-w-0">
       <h5 className="text-[13.5px] font-medium truncate">{user.name}</h5>
-      <p className="text-xs text-muted-foreground">Hey there! I'm using whop</p>
+      <p className="text-xs text-muted-foreground">Hey there! I'm using messenger</p>
     </div>
   </>
 ));

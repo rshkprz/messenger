@@ -62,7 +62,7 @@ export default function SignIn({
                   control={form.control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="label-email">Email</FieldLabel>
+                      <FieldLabel htmlFor="input-email">Email</FieldLabel>
                       <Input
                         {...field}
                         id="input-email"
@@ -84,7 +84,7 @@ export default function SignIn({
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <div className="flex items-center">
-                        <FieldLabel htmlFor="label-password">
+                        <FieldLabel htmlFor="input-password">
                           Password
                         </FieldLabel>
                         <Link

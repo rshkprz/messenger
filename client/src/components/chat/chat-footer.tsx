@@ -90,7 +90,7 @@ export default function ChatFooter({
     <>
       <div className="sticky bottom-0 inset-x-0 z-[999] bg-card border-t border-border py-4">
         
-        {/* 📷 Image Preview */}
+        {/* Image Preview */}
         {image && !isSendingMsg && (
           <div className="max-w-6xl mx-auto px-8.5 mb-2">
             <div className="relative w-fit">
@@ -112,12 +112,12 @@ export default function ChatFooter({
           </div>
         )}
 
-        {/* 💬 Form */}
+        {/* Form */}
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="max-w-6xl px-8.5 mx-auto flex items-end gap-2"
         >
-          {/* 📎 File Upload */}
+          {/* File Upload */}
           <Button
             type="button"
             variant="outline"
@@ -138,7 +138,7 @@ export default function ChatFooter({
             onChange={handleImageChange}
           />
 
-          {/* 📝 Message Input */}
+          {/* Message Input */}
           <FieldGroup className="flex-1">
             <Controller
               name="message"
@@ -157,7 +157,7 @@ export default function ChatFooter({
             />
           </FieldGroup>
 
-          {/* 🚀 Send */}
+          {/* Send */}
           <Button
             type="submit"
             size="icon"
@@ -169,7 +169,7 @@ export default function ChatFooter({
         </form>
       </div>
 
-      {/* 🔁 Reply Bar */}
+      {/* Reply Bar */}
       {replyTo && !isSendingMsg && (
         <ChatReplyBar
           replyTo={replyTo}

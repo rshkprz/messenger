@@ -8,7 +8,7 @@ export default function AppWrapper({ children }: Props) {
   return (
     <div className="h-full">
       <Sidebar />
-      <main className="h-full">{children}</main>
+      <main className="lg:pl-10 h-full">{children}</main>
     </div>
   );
 }
